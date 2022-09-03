@@ -1,5 +1,25 @@
-const world = 'world'
+import { OData } from "@odata/client"
 
-export function hello (who: string = world): string {
-  return `Hello ${who}! `
+const serviceUrl = "https://ws.parlament.ch/odata.svc/$metadata"
+const client = OData.New({
+  metadataUri: serviceUrl,
+})
+
+export function languageFilter(lang: string) {
+  return client.newFilter().property("Language").eq(lang);
 }
+
+export async function getPerson() {
+  return client.newRequest({
+    collection: "Person",
+    params: client.newParam().filter(languageFilter("DE"))
+  })
+}
+
+// TEST
+const runner = async () => {
+  const person = await getPerson();
+  console.log(person);
+}
+
+runner();

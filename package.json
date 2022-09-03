@@ -17,9 +17,6 @@
   ],
   "author": "benggy",
   "license": "ISC",
-  "dependencies": {
-    "odata-client": "^0.7.1"
-  },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.36.1",
     "eslint": "^8.23.0",
@@ -28,5 +25,8 @@
     "eslint-plugin-n": "^15.2.5",
     "eslint-plugin-promise": "^6.0.1",
     "typescript": "^4.8.2"
+  },
+  "dependencies": {
+    "@odata/client": "^2.20.2"
   }
 }
