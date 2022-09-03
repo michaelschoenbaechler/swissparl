@@ -1,0 +1,23 @@
+{
+  "name": "swissparl",
+  "version": "0.0.1",
+  "description": "A javascript library for interacting with the swiss parlament open data webservices",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [
+    "swiss",
+    "parlament",
+    "odata",
+    "webservice"
+  ],
+  "author": "benggy",
+  "license": "ISC",
+  "dependencies": {
+    "odata-client": "^0.7.1"
+  },
+  "devDependencies": {
+    "typescript": "^4.8.2"
+  }
+}
