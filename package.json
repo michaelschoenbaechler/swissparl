@@ -4,7 +4,8 @@
   "description": "A javascript library for interacting with the swiss parlament open data webservices",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "npx tsc",
+    "build:watch": "npx tsc -w"
   },
   "keywords": [
     "swiss",
