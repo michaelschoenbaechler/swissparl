@@ -7,7 +7,10 @@
     "start": "npx webpack-dev-server --mode development",
     "build": "npx webpack --mode production",
     "lint": "npx eslint .",
-    "lint:fix": "npx eslint . --fix"
+    "lint:fix": "npm run lint -- --fix",
+    "prettier": "npx prettier . --check",
+    "prettier:fix": "npm run prettier -- --write",
+    "format": "npm run prettier:fix && npm run lint:fix"
   },
   "keywords": [
     "swiss",
@@ -20,6 +23,7 @@
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.36.1",
     "eslint": "^8.23.0",
+    "eslint-config-prettier": "^8.5.0",
     "eslint-config-standard-with-typescript": "^22.0.0",
     "eslint-plugin-import": "^2.26.0",
     "eslint-plugin-n": "^15.2.5",
