@@ -6,19 +6,17 @@ export enum Collection {
 
 export interface SwissParlEntity {
   ID?: string;
+  Language?: string;
 }
 
 export interface Person extends SwissParlEntity {
-  Language?: string;
   NumberOfChildren?: number;
 }
 
 export interface Party extends SwissParlEntity {
-  Language?: string;
   PartyAbbreviation?: string;
 }
 
 export interface MemberParty extends SwissParlEntity {
-  Language?: string;
   PartyAbbreviation?: string;
 }
