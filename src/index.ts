@@ -41,12 +41,9 @@ export async function queryCollection<T extends SwissParlEntity>(
   return entities.d != null ? entities.d?.results : [];
 }
 
-const runner = async (): Promise<void> => {
-  const person = await queryCollection<Party>(Collection.Party, {
-    filter: { Language: "DE" },
-    expand: "MembersParty",
-  });
-  console.log(person);
-};
-
-runner().catch((err) => console.error(err));
+queryCollection<Party>(Collection.Party, {
+  filter: { Language: "DE" },
+  expand: "MembersParty",
+}).then((party) => {
+  console.log(party);
+}).catch((err) => console.error(err));
