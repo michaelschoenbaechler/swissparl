@@ -8,7 +8,7 @@ const client = OData.New({
 
 interface RequestOptions<T extends SwissParlEntity> {
   filter?: T;
-  expand?: string;
+  expand?: keyof T;
 }
 
 function createFilter<T>(filterProperties: T): ODataFilter {
@@ -33,10 +33,10 @@ export async function queryCollection<T extends SwissParlEntity>(
     params.expand(options.expand);
   }
 
-  const entities: PlainODataMultiResponse = await client.newRequest<T>({
+  const entities: PlainODataMultiResponse<T> = await client.newRequest<T>({
     collection,
     params,
   });
 
-  return entities.d != null ? entities.d?.results : [];
+  return entities.d != undefined ? entities.d.results : [];
 }

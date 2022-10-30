@@ -60,6 +60,8 @@ export interface MemberParty extends SwissParlEntity {
   PartyFunction?: string;
   Modified?: string;
   PartyAbbreviation?: string;
+  Parties?: Party[];
+  MembersCouncil?: MemberCouncil[];
 }
 
 export interface Party extends SwissParlEntity {
@@ -71,6 +73,7 @@ export interface Party extends SwissParlEntity {
   EndDate?: string;
   Modified?: string;
   PartyAbbreviation?: string;
+  MembersParty?: MemberParty[];
 }
 
 export interface Person extends SwissParlEntity {
@@ -95,6 +98,13 @@ export interface Person extends SwissParlEntity {
   MilitaryRankText?: string;
   NativeLanguage?: string;
   NumberOfChildren?: number;
+  PersonAddresses?: PersonAddress[];
+  PersonCommunications?: PersonCommunication[];
+  PersonInterests?: PersonInterest[];
+  Citizenships?: Citizenship[];
+  MembersCouncil?: MemberCouncil[];
+  PersonOccupations?: PersonOccupation[];
+  PersonEmployees?: PersonEmployee[];
 }
 
 export interface PersonAddress extends SwissParlEntity {
@@ -114,6 +124,7 @@ export interface PersonAddress extends SwissParlEntity {
   CantonNumber?: number;
   Postcode?: string;
   CantonAbbreviation?: string;
+  Persons?: Person[];
 }
 
 export interface PersonCommunication extends SwissParlEntity {
@@ -124,6 +135,7 @@ export interface PersonCommunication extends SwissParlEntity {
   CommunicationType?: number;
   CommunicationTypeText?: string;
   Modified?: string;
+  Persons?: Person[];
 }
 
 export interface PersonInterest extends SwissParlEntity {
@@ -146,6 +158,7 @@ export interface PersonInterest extends SwissParlEntity {
   InterestName?: string;
   SortOrder?: number;
   Paid?: boolean;
+  Persons?: Person[];
 }
 
 export interface Session extends SwissParlEntity {
@@ -161,6 +174,10 @@ export interface Session extends SwissParlEntity {
   TypeName?: string;
   Modified?: string;
   LegislativePeriodNumber?: number;
+  Meetings?: Meeting[];
+  LegislativePeriods?: LegislativePeriod[];
+  Businesses?: Business[];
+  Votes?: Vote[];
 }
 
 export interface Committee extends SwissParlEntity {
@@ -181,6 +198,8 @@ export interface Committee extends SwissParlEntity {
   CommitteeTypeAbbreviation?: string;
   CouncilAbbreviation?: string;
   DisplayType?: number;
+  MembersCommittee?: MemberCommittee[];
+  BusinessRoles?: BusinessRole[];
 }
 
 export interface MemberCommittee extends SwissParlEntity {
@@ -215,6 +234,8 @@ export interface MemberCommittee extends SwissParlEntity {
   CommitteeType?: number;
   CommitteeTypeName?: string;
   CommitteeTypeAbbreviation?: string;
+  Committees?: Committee[];
+  MembersCouncil?: MemberCouncil[];
 }
 
 export interface Canton extends SwissParlEntity {
@@ -223,6 +244,7 @@ export interface Canton extends SwissParlEntity {
   CantonNumber?: number;
   CantonName?: string;
   CantonAbbreviation?: string;
+  BusinessRoles?: BusinessRole[];
 }
 
 export interface Council extends SwissParlEntity {
@@ -231,6 +253,8 @@ export interface Council extends SwissParlEntity {
   CouncilName?: string;
   CouncilAbbreviation?: string;
   Modified?: string;
+  Businesses?: Business[];
+  Businesses2?: Business[];
 }
 
 export interface Objective extends SwissParlEntity {
@@ -258,6 +282,7 @@ export interface Objective extends SwissParlEntity {
   BusinessTypeAbbreviation?: string;
   PublicationTypeAbbreviation?: string;
   ReferendumDeadline?: string;
+  Bills?: Bill[];
 }
 
 export interface Resolution extends SwissParlEntity {
@@ -280,6 +305,7 @@ export interface Resolution extends SwissParlEntity {
   CommitteeAbbreviation1?: string;
   CommitteeAbbreviation2?: string;
   Committee?: number;
+  Bills?: Bill[];
 }
 
 export interface Publication extends SwissParlEntity {
@@ -297,6 +323,7 @@ export interface Publication extends SwissParlEntity {
   BusinessNumber?: number;
   BusinessShortNumber?: string;
   PublicationTypeAbbreviation?: string;
+  Businesses?: Business[];
 }
 
 export interface External extends SwissParlEntity {
@@ -304,6 +331,7 @@ export interface External extends SwissParlEntity {
   Language?: string;
   Name?: string;
   Modified?: string;
+  BusinessRoles?: BusinessRole[];
 }
 
 export interface Meeting extends SwissParlEntity {
@@ -324,6 +352,8 @@ export interface Meeting extends SwissParlEntity {
   MeetingOrderText?: string;
   SortOrder?: number;
   Location?: string;
+  Sessions?: Session[];
+  Subjects?: Subject[];
 }
 
 export interface Subject extends SwissParlEntity {
@@ -333,6 +363,9 @@ export interface Subject extends SwissParlEntity {
   VerbalixOid?: number;
   SortOrder?: number;
   Modified?: string;
+  Meetings?: Meeting[];
+  SubjectsBusiness?: SubjectBusiness[];
+  Transcripts?: Transcript[];
 }
 
 export interface Citizenship extends SwissParlEntity {
@@ -344,6 +377,8 @@ export interface Citizenship extends SwissParlEntity {
   CantonName?: string;
   CantonAbbreviation?: string;
   Modified?: string;
+  Persons?: Person[];
+  MembersCouncil?: MemberCouncil[];
 }
 
 export interface Preconsultation extends SwissParlEntity {
@@ -366,6 +401,8 @@ export interface Preconsultation extends SwissParlEntity {
   BusinessType?: number;
   BusinessTypeName?: string;
   BusinessTypeAbbreviation?: string;
+  Businesses?: Business[];
+  Bills?: Bill[];
 }
 
 export interface Bill extends SwissParlEntity {
@@ -386,6 +423,13 @@ export interface Bill extends SwissParlEntity {
   BusinessStatusDate?: string;
   Modified?: string;
   SubmissionDate?: string;
+  Businesses?: Business[];
+  BillStates?: BillStatus[];
+  BillLinks?: BillLink[];
+  Objectives?: Objective[];
+  Preconsultations?: Preconsultation[];
+  Resolutions?: Resolution[];
+  Rapporteurs?: Rapporteur[];
 }
 
 export interface BillLink extends SwissParlEntity {
@@ -398,6 +442,7 @@ export interface BillLink extends SwissParlEntity {
   LinkTypeId?: number;
   LinkType?: string;
   StartDate?: string;
+  Bills?: Bill[];
 }
 
 export interface BillStatus extends SwissParlEntity {
@@ -417,6 +462,7 @@ export interface BillStatus extends SwissParlEntity {
   CommitteeAbbreviation2?: string;
   Language?: string;
   Modified?: string;
+  Bills?: Bill[];
 }
 
 export interface Business extends SwissParlEntity {
@@ -463,6 +509,21 @@ export interface Business extends SwissParlEntity {
   FirstCouncil2Name?: string;
   FirstCouncil2Abbreviation?: string;
   TagNames?: string;
+  BusinessResponsibilities?: BusinessResponsibility[];
+  RelatedBusinesses?: RelatedBusiness[];
+  BusinessRoles?: BusinessRole[];
+  Publications?: Publication[];
+  LegislativePeriods?: LegislativePeriod[];
+  Sessions?: Session[];
+  Preconsultations?: Preconsultation[];
+  Bills?: Bill[];
+  Councils?: Council[];
+  BusinessTypes?: BusinessType[];
+  Votes?: Vote[];
+  SubjectsBusiness?: SubjectBusiness[];
+  BusinessStates?: BusinessStatus[];
+  Council?: Council[];
+  Transcripts?: Transcript[];
 }
 
 export interface BusinessResponsibility extends SwissParlEntity {
@@ -475,6 +536,7 @@ export interface BusinessResponsibility extends SwissParlEntity {
   IsLeading?: boolean;
   Modified?: string;
   BillNumber?: number;
+  Businesses?: Business[];
 }
 
 export interface BusinessRole extends SwissParlEntity {
@@ -496,6 +558,12 @@ export interface BusinessRole extends SwissParlEntity {
   BusinessType?: number;
   BusinessTypeName?: string;
   BusinessTypeAbbreviation?: string;
+  MembersCouncil?: MemberCouncil[];
+  ParlGroups?: ParlGroup[];
+  Businesses?: Business[];
+  Cantons?: Canton[];
+  Externals?: External[];
+  Committees?: Committee[];
 }
 
 export interface LegislativePeriod extends SwissParlEntity {
@@ -507,6 +575,9 @@ export interface LegislativePeriod extends SwissParlEntity {
   StartDate?: string;
   EndDate?: string;
   Modified?: string;
+  Businesses?: Business[];
+  Sessions?: Session[];
+  Votes?: Vote[];
 }
 
 export interface MemberCouncil extends SwissParlEntity {
@@ -554,6 +625,16 @@ export interface MemberCouncil extends SwissParlEntity {
   Citizenship?: string;
   DateOfBirth?: string;
   DateOfDeath?: string;
+  MembersParty?: MemberParty[];
+  Persons?: Person[];
+  MembersParlGroup?: MemberParlGroup[];
+  MembersCommittee?: MemberCommittee[];
+  BusinessRoles?: BusinessRole[];
+  Citizenships?: Citizenship[];
+  MembersCommitteeHistory?: MemberCommitteeHistory[];
+  MemberCouncilHistories?: MemberCouncilHistory[];
+  Votings?: Voting[];
+  Transcripts?: Transcript[];
 }
 
 export interface MemberParlGroup extends SwissParlEntity {
@@ -580,6 +661,8 @@ export interface MemberParlGroup extends SwissParlEntity {
   CouncilName?: string;
   CouncilAbbreviation?: string;
   Modified?: string;
+  MembersCouncil?: MemberCouncil[];
+  ParlGroups?: ParlGroup[];
 }
 
 export interface ParlGroup extends SwissParlEntity {
@@ -593,6 +676,8 @@ export interface ParlGroup extends SwissParlEntity {
   NameUsedSince?: string;
   Modified?: string;
   ParlGroupColour?: string;
+  MembersParlGroup?: MemberParlGroup[];
+  BusinessRoles?: BusinessRole[];
 }
 
 export interface PersonOccupation extends SwissParlEntity {
@@ -606,6 +691,7 @@ export interface PersonOccupation extends SwissParlEntity {
   Modified?: string;
   Employer?: string;
   JobTitle?: string;
+  Persons?: Person[];
 }
 
 export interface RelatedBusiness extends SwissParlEntity {
@@ -622,6 +708,7 @@ export interface RelatedBusiness extends SwissParlEntity {
   RelatedBusinessType?: number;
   RelatedBusinessTypeName?: string;
   RelatedBusinessTypeAbbreviation?: string;
+  Businesses?: Business[];
 }
 
 export interface BusinessStatus extends SwissParlEntity {
@@ -634,6 +721,7 @@ export interface BusinessStatus extends SwissParlEntity {
   IsMotionInSecondCouncil?: boolean;
   NewKey?: number;
   Modified?: string;
+  Business?: Business[];
 }
 
 export interface BusinessType extends SwissParlEntity {
@@ -642,6 +730,7 @@ export interface BusinessType extends SwissParlEntity {
   BusinessTypeAbbreviation?: string;
   Language?: string;
   Modified?: string;
+  Businesses?: Business[];
 }
 
 export interface MemberCouncilHistory extends SwissParlEntity {
@@ -687,6 +776,7 @@ export interface MemberCouncilHistory extends SwissParlEntity {
   Citizenship?: string;
   DateOfBirth?: string;
   DateOfDeath?: string;
+  MembersCouncil?: MemberCouncil[];
 }
 
 export interface MemberCommitteeHistory extends SwissParlEntity {
@@ -720,6 +810,7 @@ export interface MemberCommitteeHistory extends SwissParlEntity {
   CantonName?: string;
   CantonAbbreviation?: string;
   Modified?: string;
+  MembersCouncil?: MemberCouncil[];
 }
 
 export interface Vote extends SwissParlEntity {
@@ -740,6 +831,10 @@ export interface Vote extends SwissParlEntity {
   MeaningNo?: string;
   VoteEnd?: string;
   VoteEndWithTimezone?: any;
+  Votings?: Voting[];
+  Businesses?: Business[];
+  LegislativePeriods?: LegislativePeriod[];
+  Sessions?: Session[];
 }
 
 export interface Voting extends SwissParlEntity {
@@ -770,6 +865,8 @@ export interface Voting extends SwissParlEntity {
   CantonID?: number;
   Subject?: string;
   VoteEndWithTimezone?: any;
+  Votes?: Vote[];
+  MembersCouncil?: MemberCouncil[];
 }
 
 export interface SubjectBusiness extends SwissParlEntity {
@@ -784,6 +881,8 @@ export interface SubjectBusiness extends SwissParlEntity {
   TitleDE?: string;
   TitleFR?: string;
   TitleIT?: string;
+  Subjects?: Subject[];
+  Businesses?: Business[];
 }
 
 export interface Transcript extends SwissParlEntity {
@@ -821,6 +920,9 @@ export interface Transcript extends SwissParlEntity {
   VoteBusinessNumber?: number;
   VoteBusinessShortNumber?: string;
   VoteBusinessTitle?: string;
+  Subjects?: Subject[];
+  MembersCouncil?: MemberCouncil[];
+  Businesses?: Business[];
 }
 
 export interface ParlGroupHistory extends SwissParlEntity {
@@ -863,6 +965,7 @@ export interface PersonEmployee extends SwissParlEntity {
   Employer?: string;
   JobTitle?: string;
   Modified?: string;
+  Persons?: Person[];
 }
 
 export interface Rapporteur extends SwissParlEntity {
@@ -877,4 +980,5 @@ export interface Rapporteur extends SwissParlEntity {
   FirstName?: string;
   Language?: string;
   Modified?: string;
+  Bill?: Bill[];
 }

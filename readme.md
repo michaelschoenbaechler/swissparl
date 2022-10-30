@@ -1,6 +1,8 @@
 # Swiss Parlament API
 
-A javascript library for interacting with the swiss parlament open data webservices
+A typed javascript library for easy access to the [swiss parlament](https://www.parlament.ch) open data webservices.
+
+Metadata: https://ws.parlament.ch/odata.svc/$metadata
 
 ### Install
 

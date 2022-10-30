@@ -1,7 +1,7 @@
 {
   "name": "swissparl",
   "version": "0.0.1",
-  "description": "A javascript library for interacting with the swiss parlament open data webservices",
+  "description": "A typed javascript library for interacting with the swiss parlament open data webservices",
   "main": "dist/index.js",
   "scripts": {
     "build": "npx tsc",
