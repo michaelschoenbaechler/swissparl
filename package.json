@@ -19,6 +19,10 @@
   ],
   "author": "benggy",
   "license": "ISC",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/michaelschoenbaechler/swissparl.git"
+  },
   "devDependencies": {
     "@typescript-eslint/eslint-plugin": "^5.36.1",
     "eslint": "^8.23.0",
