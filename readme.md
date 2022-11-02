@@ -41,8 +41,3 @@ queryCollection<Voting>("Voting", {
   })
   .catch((err) => console.error(err));
 ```
-
-### Todo
-
-- Support full ODataQueryParam interface
-- Override url
