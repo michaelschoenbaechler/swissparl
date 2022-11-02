@@ -11,22 +11,38 @@ Metadata: https://ws.parlament.ch/odata.svc/$metadata
 ### Usage
 
 ```typescript
-import { queryCollection, Collection, Person, Party } from "swissparl";
+import { queryCollection, Collection, Session, Voting } from "swissparl";
 
-queryCollection<Person>(Collection.Person, {
-  filter: { Language: "DE", LastName: "Müller" },
+queryCollection<Session>(Collection.Session, {
+  filter: [{ Language: "DE", ID: XXXX }],
+  expand: ["Votes", "Meetings"],
 })
   .then((result) => {
-    console.log(result);
+    console.log("Sessions", result);
   })
   .catch((err) => console.error(err));
 
-queryCollection<Party>(Collection.Party, {
-  filter: { Language: "DE", PartyAbbreviation: "SP" },
-  expand: "MembersParty",
+queryCollection<Voting>(Collection.Voting, {
+  filter: [{ Language: "DE", PersonNumber: XXXX }],
+  skip: 50,
+  top: 50,
 })
   .then((result) => {
-    console.log(result);
+    console.log("Votings", result);
+  })
+  .catch((err) => console.error(err));
+
+queryCollection<Voting>("Voting", {
+  filter: [{ Language: "DE", ID: XXXX }, { ID: YYYY }],
+  select: ["BillTitle", "DecisionText"],
+})
+  .then((result) => {
+    console.log("Votings", result);
   })
   .catch((err) => console.error(err));
 ```
+
+### Todo
+
+- Support full ODataQueryParam interface
+- Override url

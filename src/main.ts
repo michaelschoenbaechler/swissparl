@@ -1,4 +1,4 @@
-import { OData, ODataFilter, PlainODataMultiResponse } from "@odata/client";
+import { OData, ODataFilter } from "@odata/client";
 import { Collection, SwissParlEntity } from "./models";
 
 const serviceUrl = "https://ws.parlament.ch/odata.svc/$metadata";
@@ -7,21 +7,26 @@ const client = OData.New({
 });
 
 interface RequestOptions<T extends SwissParlEntity> {
-  filter?: T;
-  expand?: keyof T;
+  filter?: T[];
+  expand?: Array<keyof T>;
+  select?: Array<keyof T>;
+  skip?: number;
+  top?: number;
 }
 
-function createFilter<T>(filterProperties: T): ODataFilter {
+function createFilter<T>(filterOptions: T[]): ODataFilter {
   const filter = client.newFilter();
-  for (const key in filterProperties) {
-    const value = filterProperties[key] as string;
-    filter.property(key).eq(value);
-  }
+  filterOptions.forEach((filterProperties) => {
+    for (const key in filterProperties) {
+      const value = filterProperties[key] as string;
+      filter.property(key).eq(value);
+    }
+  });
   return filter;
 }
 
 export async function queryCollection<T extends SwissParlEntity>(
-  collection: Collection,
+  collection: keyof typeof Collection,
   options: RequestOptions<T>
 ): Promise<T[]> {
   const params = client.newParam();
@@ -30,13 +35,33 @@ export async function queryCollection<T extends SwissParlEntity>(
   }
 
   if (options.expand !== undefined) {
-    params.expand(options.expand);
+    options.expand.forEach((e) => params.expand(e));
   }
 
-  const entities: PlainODataMultiResponse<T> = await client.newRequest<T>({
+  if (options.select !== undefined) {
+    options.select.forEach((s) => params.select(s));
+  }
+
+  if (options.skip !== undefined) {
+    params.skip(options.skip);
+  }
+
+  if (options.top !== undefined) {
+    params.top(options.top);
+  }
+
+  params.format("json");
+
+  const entities: any = await client.newRequest<T>({
     collection,
     params,
   });
 
-  return entities.d != undefined ? entities.d.results : [];
+  if (entities.d === undefined) {
+    return [];
+  }
+
+  return entities.d?.results !== undefined
+    ? (entities.d.results as T[])
+    : (entities.d as T[]);
 }

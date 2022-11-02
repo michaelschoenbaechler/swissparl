@@ -45,6 +45,7 @@ export enum Collection {
   Rapporteur = "Rapporteur",
 }
 
+// eslint-disable-next-line
 export interface SwissParlEntity {}
 
 export interface MemberParty extends SwissParlEntity {
