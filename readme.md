@@ -41,7 +41,7 @@ queryCollection<Voting>(Collection.Voting, {
   .catch((err) => console.error(err));
 ```
 
-Filter multiple entities (all properties result in logical OR).
+Filter multiple entities (duplicates result in logical OR).
 
 ```typescript
 import { queryCollection, Voting } from "swissparl";
