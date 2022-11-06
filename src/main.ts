@@ -12,6 +12,10 @@ interface RequestOptions<T extends SwissParlEntity> {
   select?: Array<keyof T>;
   skip?: number;
   top?: number;
+  orderby?: {
+    property: keyof T;
+    order?: "asc" | "desc";
+  };
 }
 
 function createFilter<T>(filterOptions: T[]): ODataFilter {
@@ -48,6 +52,10 @@ export async function queryCollection<T extends SwissParlEntity>(
 
   if (options.top !== undefined) {
     params.top(options.top);
+  }
+
+  if (options.orderby !== undefined) {
+    params.orderby(options.orderby.property, options.orderby?.order ?? 'asc');
   }
 
   params.format("json");
