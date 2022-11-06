@@ -81,5 +81,9 @@ interface QueryOptions<T extends SwissParlEntity> {
   select?: Array<keyof T>;
   skip?: number;
   top?: number;
+  orderby?: {
+    property: keyof T;
+    order?: "asc" | "desc";
+  };
 }
 ```

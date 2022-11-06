@@ -55,7 +55,7 @@ export async function queryCollection<T extends SwissParlEntity>(
   }
 
   if (options.orderby !== undefined) {
-    params.orderby(options.orderby.property, options.orderby?.order ?? 'asc');
+    params.orderby(options.orderby.property, options.orderby?.order ?? "asc");
   }
 
   params.format("json");
