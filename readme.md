@@ -70,7 +70,16 @@ queryCollection<Voting>("Voting", {
   .catch((err) => console.error(err));
 ```
 
-### Interface
+### API
+
+QueryCollection
+
+```typescript
+queryCollection<T extends SwissParlEntity>(
+    collection: keyof typeof Collection,
+    options: QueryOptions<T>,
+    config?: Config): Promise<T[]>
+```
 
 QueryOptions
 
@@ -85,5 +94,14 @@ interface QueryOptions<T extends SwissParlEntity> {
     property: keyof T;
     order?: "asc" | "desc";
   };
+}
+```
+
+Config
+
+```typescript
+interface Config {
+  deepParse?: boolean; // for expanded objects
+  maxResults?: number; // default 1000
 }
 ```
