@@ -41,13 +41,21 @@ queryCollection<Voting>(Collection.Voting, {
   .catch((err) => console.error(err));
 ```
 
-Filter multiple entities (duplicates result in logical OR).
+Filter entities
+
+Note:
+
+- Duplicates across entities result in logical OR (see ID example)
+- Multiple operators result in logical AND
 
 ```typescript
 import { queryCollection, Voting } from "swissparl";
 
 queryCollection<Voting>("Voting", {
-  filter: [{ Language: "DE", ID: XXXX }, { ID: YYYY }],
+  filter: {
+    eq: [{ Language: "DE", ID: XXXX }, { ID: YYYY }],
+    gt: [{ PersonNumber: 5000 }]
+  },
 })
   .then((result) => {
     console.log("Votings", result);
@@ -84,8 +92,15 @@ queryCollection<T extends SwissParlEntity>(
 QueryOptions
 
 ```typescript
+type filterOptions<T> =
+  | { eq: T[] }
+  | { ne: T[] }
+  | { gt: T[] }
+  | { lt: T[] }
+  | { ge: T[] }
+  | { le: T[] };
 interface QueryOptions<T extends SwissParlEntity> {
-  filter?: T[];
+  filter?: filterOptions<T>;
   expand?: Array<keyof T>; // only navigation properties
   select?: Array<keyof T>;
   skip?: number;
