@@ -1,14 +1,18 @@
 # Swiss Parlament API
 
-A typed javascript library for easy access to the [swiss parlament](https://www.parlament.ch) open data webservices.
+A typed JavaScript library designed for easy access to the [swiss parlament](https://www.parlament.ch)  open data web services. Retrieve and manipulate parliamentary data with a user-friendly interface and powerful filtering options.
 
 Metadata: https://ws.parlament.ch/odata.svc/$metadata
 
-### Install
+## Installation
+
+Install the `swissparl` package using npm:
 
 `npm install swissparl`
 
-### Usage
+## Usage
+
+### Expand 
 
 Query relationships with expand option
 
@@ -24,6 +28,8 @@ queryCollection<Session>(Collection.Session, {
   })
   .catch((err) => console.error(err));
 ```
+
+### Pagination
 
 Support for pagination with skip and top property
 
@@ -41,12 +47,13 @@ queryCollection<Voting>(Collection.Voting, {
   .catch((err) => console.error(err));
 ```
 
-Filter entities
+### Filter
 
-Note:
+Flexible filtering options allow you to refine your queries:
 
 - Duplicates across entities result in logical OR (see ID example)
 - Multiple operators result in logical AND
+- Use substringOf to filter by substring
 
 ```typescript
 import { queryCollection, Voting } from "swissparl";
@@ -54,7 +61,8 @@ import { queryCollection, Voting } from "swissparl";
 queryCollection<Voting>("Voting", {
   filter: {
     eq: [{ Language: "DE", ID: XXXX }, { ID: YYYY }],
-    gt: [{ PersonNumber: 5000 }]
+    gt: [{ PersonNumber: 5000 }],
+    substringOf: [{ BillTitle: "some substring" }]
   },
 })
   .then((result) => {
@@ -63,7 +71,9 @@ queryCollection<Voting>("Voting", {
   .catch((err) => console.error(err));
 ```
 
-Reduce size of result by selecting only required properties
+### Select
+
+Optimize your queries by fetching only the necessary properties:
 
 ```typescript
 import { queryCollection, Voting } from "swissparl";
@@ -78,9 +88,9 @@ queryCollection<Voting>("Voting", {
   .catch((err) => console.error(err));
 ```
 
-### API
+## API
 
-QueryCollection
+### QueryCollection
 
 ```typescript
 queryCollection<T extends SwissParlEntity>(
@@ -89,18 +99,20 @@ queryCollection<T extends SwissParlEntity>(
     config?: Config): Promise<T[]>
 ```
 
-QueryOptions
+### QueryOptions
 
 ```typescript
-type filterOptions<T> =
+type FilterOptions<T> =
   | { eq: T[] }
   | { ne: T[] }
   | { gt: T[] }
   | { lt: T[] }
   | { ge: T[] }
   | { le: T[] };
+  | { substringOf: T[] };
+
 interface QueryOptions<T extends SwissParlEntity> {
-  filter?: filterOptions<T>;
+  filter?: FilterOptions<T>;
   expand?: Array<keyof T>; // only navigation properties
   select?: Array<keyof T>;
   skip?: number;
@@ -112,7 +124,7 @@ interface QueryOptions<T extends SwissParlEntity> {
 }
 ```
 
-Config
+### Config
 
 ```typescript
 interface Config {
