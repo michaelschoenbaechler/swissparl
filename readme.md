@@ -62,7 +62,7 @@ queryCollection<Voting>("Voting", {
   filter: {
     eq: [{ Language: "DE", ID: XXXX }, { ID: YYYY }],
     gt: [{ PersonNumber: 5000 }],
-    substringOf: [{ BillTitle: "some substring" }]
+    substringOf: [{ "BillTitle": "some substring" }]
   },
 })
   .then((result) => {
