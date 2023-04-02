@@ -8,15 +8,17 @@ const client = OData.New({
 
 const MAX_RESULTS = 1000;
 
-type filterOptions<T> =
-  | { eq: T[] }
-  | { ne: T[] }
-  | { gt: T[] }
-  | { lt: T[] }
-  | { ge: T[] }
-  | { le: T[] };
+type FilterOptions<T> =
+  | { eq: Partial<T>[] }
+  | { ne: Partial<T>[] }
+  | { gt: Partial<T>[] }
+  | { lt: Partial<T>[] }
+  | { ge: Partial<T>[] }
+  | { le: Partial<T>[] }
+  | { substringOf: Partial<T>[] };
+
 interface QueryOptions<T extends SwissParlEntity> {
-  filter?: filterOptions<T>;
+  filter?: FilterOptions<T>;
   expand?: Array<keyof T>;
   select?: Array<keyof T>;
   skip?: number;
@@ -32,14 +34,19 @@ interface Config {
   maxResults?: number;
 }
 
-function createFilter<T>(filterOptions: filterOptions<T>): ODataFilter {
+function createFilter<T>(filterOptions: FilterOptions<T>): ODataFilter {
   const filter = client.newFilter();
   Object.entries(filterOptions).forEach(([operator, properties]) => {
-    for (const entity of properties) {
-      Object.entries(entity as any).forEach(([key, value]) => {
-        (filter.property(key) as any)[operator](value);
+    properties.forEach((entity) => {
+      Object.entries(entity).forEach(([key, value]) => {
+        if (operator === "substringOf") {
+          filter.property(`substringof('${value}', ${key})`).eq(true);
+        } else {
+          const typedOperator = operator as keyof ODataFilter;
+          (filter.property(key) as any)[typedOperator](value);
+        }
       });
-    }
+    });
   });
   return filter;
 }
