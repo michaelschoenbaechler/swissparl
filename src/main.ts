@@ -50,7 +50,7 @@ function createFilter<T>(filterOptions: FilterOptions<T>): ODataFilter {
     });
   });
   if (substringFilter.length > 0) {
-    filter.property(substringFilter.join(" or ")).eq(true);
+    filter.property('(' + substringFilter.join(" or ") + ')').eq(true);
   }
   return filter;
 }
