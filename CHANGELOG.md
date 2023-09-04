@@ -2,7 +2,12 @@
 
 All notable changes to the swissparl project will be documented in this file.
 
-## [0.0.5] - 2023-04-02
+## [0.6.0] - 2023-09-04
+
+- SubstringOf now supports multiple search terms, allowing users to search for multiple substrings within specified properties.
+- Renaming of the exposed function queryCollection to fetchCollection.
+
+## [0.5.0] - 2023-04-02
 
 - Introduced the substringOf function to enable users to filter data by searching for substrings within specified properties.
 

@@ -17,9 +17,9 @@ Install the `swissparl` package using npm:
 Query relationships with expand option
 
 ```typescript
-import { queryCollection, Collection, Session } from "swissparl";
+import { fetchCollection, Collection, Session } from "swissparl";
 
-queryCollection<Session>(Collection.Session, {
+fetchCollection<Session>(Collection.Session, {
   filter: [{ ID: XXXX }],
   expand: ["Votes", "Meetings"],
 })
@@ -34,9 +34,9 @@ queryCollection<Session>(Collection.Session, {
 Support for pagination with skip and top property
 
 ```typescript
-import { queryCollection, Collection, Voting } from "swissparl";
+import { fetchCollection, Collection, Voting } from "swissparl";
 
-queryCollection<Voting>(Collection.Voting, {
+fetchCollection<Voting>(Collection.Voting, {
   filter: [{ PersonNumber: XXXX }],
   skip: 50,
   top: 50,
@@ -53,16 +53,16 @@ Flexible filtering options allow you to refine your queries:
 
 - Duplicates across entities result in logical OR (see ID example)
 - Multiple operators result in logical AND
-- Use substringOf to filter by substring
+- Use substringOf to filter by substring. Multiple substringOf filters always result in logical OR
 
 ```typescript
-import { queryCollection, Voting } from "swissparl";
+import { fetchCollection, Voting } from "swissparl";
 
-queryCollection<Voting>("Voting", {
+fetchCollection<Voting>("Voting", {
   filter: {
     eq: [{ Language: "DE", ID: XXXX }, { ID: YYYY }],
     gt: [{ PersonNumber: 5000 }],
-    substringOf: [{ "BillTitle": "some substring" }]
+    substringOf: [{ "BillTitle": "some substring", "Subject": "some substring" }]
   },
 })
   .then((result) => {
@@ -76,9 +76,9 @@ queryCollection<Voting>("Voting", {
 Optimize your queries by fetching only the necessary properties:
 
 ```typescript
-import { queryCollection, Voting } from "swissparl";
+import { fetchCollection, Voting } from "swissparl";
 
-queryCollection<Voting>("Voting", {
+fetchCollection<Voting>("Voting", {
   filter: [{ ID: XXXX }],
   select: ["BillTitle", "DecisionText"],
 })
@@ -90,10 +90,10 @@ queryCollection<Voting>("Voting", {
 
 ## API
 
-### QueryCollection
+### FetchCollection
 
 ```typescript
-queryCollection<T extends SwissParlEntity>(
+fetchCollection<T extends SwissParlEntity>(
     collection: keyof typeof Collection,
     options: QueryOptions<T>,
     config?: Config): Promise<T[]>

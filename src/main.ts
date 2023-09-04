@@ -9,13 +9,13 @@ const client = OData.New({
 const MAX_RESULTS = 1000;
 
 type FilterOptions<T> =
-  | { eq: Partial<T>[] }
-  | { ne: Partial<T>[] }
-  | { gt: Partial<T>[] }
-  | { lt: Partial<T>[] }
-  | { ge: Partial<T>[] }
-  | { le: Partial<T>[] }
-  | { substringOf: Partial<T>[] };
+  | { eq: Array<Partial<T>> }
+  | { ne: Array<Partial<T>> }
+  | { gt: Array<Partial<T>> }
+  | { lt: Array<Partial<T>> }
+  | { ge: Array<Partial<T>> }
+  | { le: Array<Partial<T>> }
+  | { substringOf: Array<Partial<T>> };
 
 interface QueryOptions<T extends SwissParlEntity> {
   filter?: FilterOptions<T>;
@@ -36,11 +36,12 @@ interface Config {
 
 function createFilter<T>(filterOptions: FilterOptions<T>): ODataFilter {
   const filter = client.newFilter();
+  const substringFilter: string[] = [];
   Object.entries(filterOptions).forEach(([operator, properties]) => {
     properties.forEach((entity) => {
       Object.entries(entity).forEach(([key, value]) => {
         if (operator === "substringOf") {
-          filter.property(`substringof('${value}', ${key})`).eq(true);
+          substringFilter.push(`substringof('${value}', ${key})`)
         } else {
           const typedOperator = operator as keyof ODataFilter;
           (filter.property(key) as any)[typedOperator](value);
@@ -48,6 +49,9 @@ function createFilter<T>(filterOptions: FilterOptions<T>): ODataFilter {
       });
     });
   });
+  if (substringFilter.length > 0) {
+    filter.property(substringFilter.join(" or ")).eq(true);
+  }
   return filter;
 }
 
@@ -70,7 +74,7 @@ function deepParseResponse<T>(
   });
 }
 
-export async function queryCollection<T extends SwissParlEntity>(
+export async function fetchCollection<T extends SwissParlEntity>(
   collection: keyof typeof Collection,
   options: QueryOptions<T>,
   config?: Config

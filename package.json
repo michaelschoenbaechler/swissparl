@@ -1,6 +1,6 @@
 {
   "name": "swissparl",
-  "version": "0.5.0",
+  "version": "0.6.0",
   "description": "A typed javascript library for interacting with the swiss parlament open data webservices",
   "main": "dist/index.js",
   "scripts": {
@@ -35,6 +35,6 @@
     "typescript": "^4.8.2"
   },
   "dependencies": {
-    "@odata/client": "^2.20.2"
+    "@odata/client": "^2.21.8"
   }
 }

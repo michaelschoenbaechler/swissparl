@@ -1,4 +1,4 @@
-export { queryCollection } from "./main";
+export { fetchCollection } from "./main";
 
 export {
   Collection,
