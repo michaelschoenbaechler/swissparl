@@ -831,7 +831,7 @@ export interface Vote extends SwissParlEntity {
   MeaningYes?: string;
   MeaningNo?: string;
   VoteEnd?: string;
-  VoteEndWithTimezone?: any;
+  VoteEndWithTimezone?: string;
   Votings?: Voting[];
   Businesses?: Business[];
   LegislativePeriods?: LegislativePeriod[];
@@ -865,7 +865,7 @@ export interface Voting extends SwissParlEntity {
   MeaningNo?: string;
   CantonID?: number;
   Subject?: string;
-  VoteEndWithTimezone?: any;
+  VoteEndWithTimezone?: string;
   Votes?: Vote[];
   MembersCouncil?: MemberCouncil[];
 }
@@ -916,8 +916,8 @@ export interface Transcript extends SwissParlEntity {
   DisplaySpeaker?: boolean;
   LanguageOfText?: string;
   Modified?: string;
-  StartTimeWithTimezone?: any;
-  EndTimeWithTimezone?: any;
+  StartTimeWithTimezone?: string;
+  EndTimeWithTimezone?: string;
   VoteBusinessNumber?: number;
   VoteBusinessShortNumber?: string;
   VoteBusinessTitle?: string;
