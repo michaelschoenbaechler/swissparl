@@ -1,4 +1,9 @@
-import { OData, ODataFilter, PlainODataMultiResponse } from "@odata/client";
+import {
+  OData,
+  ODataFilter,
+  PlainODataMultiResponse,
+  type FilterValue,
+} from "@odata/client";
 import { Collection, SwissParlEntity } from "./models";
 
 const serviceUrl = "https://ws.parlament.ch/odata.svc/$metadata";
@@ -41,34 +46,67 @@ function createFilter<T>(filterOptions: FilterOptions<T>): ODataFilter {
     properties.forEach((entity) => {
       Object.entries(entity).forEach(([key, value]) => {
         if (operator === "substringOf") {
-          substringFilter.push(`substringof('${value}', ${key})`)
+          substringFilter.push(`substringof('${value}', ${key})`);
         } else {
-          const typedOperator = operator as keyof ODataFilter;
-          (filter.property(key) as any)[typedOperator](value);
+          const propertyExpr = filter.property(key as keyof T);
+          const filterValue = value as FilterValue;
+          switch (operator) {
+            case "eq":
+              propertyExpr.eq(filterValue);
+              break;
+            case "ne":
+              propertyExpr.ne(filterValue);
+              break;
+            case "gt":
+              propertyExpr.gt(filterValue);
+              break;
+            case "lt":
+              propertyExpr.lt(filterValue);
+              break;
+            case "ge":
+              propertyExpr.ge(filterValue);
+              break;
+            case "le":
+              propertyExpr.le(filterValue);
+              break;
+            default:
+              break;
+          }
         }
       });
     });
   });
+
   if (substringFilter.length > 0) {
-    filter.property('(' + substringFilter.join(" or ") + ')').eq(true);
+    filter.property("(" + substringFilter.join(" or ") + ")").eq(true);
   }
   return filter;
 }
 
-function parseRespone<T>(response: PlainODataMultiResponse<T>): T[] {
+function parseResponse<T>(response: PlainODataMultiResponse<T>): T[] {
   return response.d?.results !== undefined
     ? response.d.results
-    : (response.d as any);
+    : ((response.d as unknown as T[]) ?? []);
+}
+
+function hasNestedResults(value: unknown): value is { results?: unknown } {
+  return typeof value === "object" && value !== null && "results" in value;
 }
 
 function deepParseResponse<T>(
   response: PlainODataMultiResponse<T>,
-  expandProperties: Array<keyof T>
+  expandProperties: Array<keyof T>,
 ): T[] {
-  const entities = parseRespone(response);
+  const entities = parseResponse(response);
   return entities.map((entity) => {
     expandProperties.forEach((key) => {
-      entity[key] = (entity[key] as any)?.results ?? entity[key];
+      const propertyValue = entity[key];
+      if (
+        hasNestedResults(propertyValue) &&
+        propertyValue.results !== undefined
+      ) {
+        entity[key] = propertyValue.results as T[typeof key];
+      }
     });
     return entity;
   });
@@ -77,7 +115,7 @@ function deepParseResponse<T>(
 export async function fetchCollection<T extends SwissParlEntity>(
   collection: keyof typeof Collection,
   options: QueryOptions<T>,
-  config?: Config
+  config?: Config,
 ): Promise<T[]> {
   const params = client.newParam();
   if (options.filter !== undefined) {
@@ -97,7 +135,9 @@ export async function fetchCollection<T extends SwissParlEntity>(
   }
 
   params.top(
-    options.top !== undefined ? options.top : config?.maxResults ?? MAX_RESULTS
+    options.top !== undefined
+      ? options.top
+      : (config?.maxResults ?? MAX_RESULTS),
   );
 
   if (options.orderby !== undefined) {
@@ -120,7 +160,7 @@ export async function fetchCollection<T extends SwissParlEntity>(
       return deepParseResponse(oData, options.expand);
     }
 
-    return parseRespone(oData);
+    return parseResponse(oData);
   } catch (e) {
     console.error("parse failed", e);
   }

@@ -3,9 +3,11 @@
 All notable changes to the swissparl project will be documented in this file.
 
 ## [0.6.2] - 2024-06-24
-- Update dependencies 
+
+- Update dependencies
 
 ## [0.6.1] - 2023-09-05
+
 - Fixed a bug where the `substringOf` function would not work as expected when used in conjunction with other operators. `substringOf` should not result in logical OR with other operators.
 
 ## [0.6.0] - 2023-09-04
@@ -35,5 +37,5 @@ All notable changes to the swissparl project will be documented in this file.
 - Added support for top, skip, and select operators, allowing users to limit the number of returned results, paginate through result sets, and choose specific properties to be included in the response data.
 
 ## [0.0.1] - 2022-10-08
-    
+
 - Initial release of the swissparl library.

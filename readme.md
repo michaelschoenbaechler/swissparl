@@ -1,6 +1,6 @@
 # Swiss Parlament API
 
-A typed JavaScript library designed for easy access to the [swiss parlament](https://www.parlament.ch)  open data web services. Retrieve and manipulate parliamentary data with a user-friendly interface and powerful filtering options.
+A typed JavaScript library designed for easy access to the [swiss parlament](https://www.parlament.ch) open data web services. Retrieve and manipulate parliamentary data with a user-friendly interface and powerful filtering options.
 
 Metadata: https://ws.parlament.ch/odata.svc/$metadata
 
@@ -12,7 +12,7 @@ Install the `swissparl` package using npm:
 
 ## Usage
 
-### Expand 
+### Expand
 
 Query relationships with expand option
 
@@ -62,7 +62,7 @@ fetchCollection<Voting>("Voting", {
   filter: {
     eq: [{ Language: "DE", ID: XXXX }, { ID: YYYY }],
     gt: [{ PersonNumber: 5000 }],
-    substringOf: [{ "BillTitle": "some substring", "Subject": "some substring" }]
+    substringOf: [{ BillTitle: "some substring", Subject: "some substring" }],
   },
 })
   .then((result) => {
