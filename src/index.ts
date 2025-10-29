@@ -1,5 +1,15 @@
 export { fetchCollection } from "./main";
 
+export type {
+  CollectionName,
+  EntityProperty,
+  FetchConfig,
+  FilterCriteria,
+  FilterOptions,
+  OrderByOption,
+  QueryOptions,
+} from "./types";
+
 export {
   Collection,
   MemberParty,

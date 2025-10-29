@@ -17,10 +17,10 @@ Install the `swissparl` package using npm:
 Query relationships with expand option
 
 ```typescript
-import { fetchCollection, Collection, Session } from "swissparl";
+import { fetchCollection, Collection, type Session } from "swissparl";
 
 fetchCollection<Session>(Collection.Session, {
-  filter: [{ ID: XXXX }],
+  filter: { eq: [{ ID: XXXX }] },
   expand: ["Votes", "Meetings"],
 })
   .then((result) => {
@@ -34,10 +34,10 @@ fetchCollection<Session>(Collection.Session, {
 Support for pagination with skip and top property
 
 ```typescript
-import { fetchCollection, Collection, Voting } from "swissparl";
+import { fetchCollection, Collection, type Voting } from "swissparl";
 
 fetchCollection<Voting>(Collection.Voting, {
-  filter: [{ PersonNumber: XXXX }],
+  filter: { eq: [{ PersonNumber: XXXX }] },
   skip: 50,
   top: 50,
 })
@@ -56,9 +56,9 @@ Flexible filtering options allow you to refine your queries:
 - Use substringOf to filter by substring. Multiple substringOf filters always result in logical OR
 
 ```typescript
-import { fetchCollection, Voting } from "swissparl";
+import { fetchCollection, Collection, type Voting } from "swissparl";
 
-fetchCollection<Voting>("Voting", {
+fetchCollection<Voting>(Collection.Voting, {
   filter: {
     eq: [{ Language: "DE", ID: XXXX }, { ID: YYYY }],
     gt: [{ PersonNumber: 5000 }],
@@ -76,10 +76,10 @@ fetchCollection<Voting>("Voting", {
 Optimize your queries by fetching only the necessary properties:
 
 ```typescript
-import { fetchCollection, Voting } from "swissparl";
+import { fetchCollection, Collection, type Voting } from "swissparl";
 
-fetchCollection<Voting>("Voting", {
-  filter: [{ ID: XXXX }],
+fetchCollection<Voting>(Collection.Voting, {
+  filter: { eq: [{ ID: XXXX }] },
   select: ["BillTitle", "DecisionText"],
 })
   .then((result) => {
@@ -90,26 +90,44 @@ fetchCollection<Voting>("Voting", {
 
 ## API
 
-### FetchCollection
+All runtime helpers and types are exported from the package entry point:
+
+```typescript
+import {
+  fetchCollection,
+  Collection,
+  type CollectionName,
+  type FetchConfig,
+  type FilterOptions,
+  type QueryOptions,
+  type SwissParlEntity,
+} from "swissparl";
+```
+
+### `fetchCollection`
 
 ```typescript
 fetchCollection<T extends SwissParlEntity>(
-    collection: keyof typeof Collection,
-    options: QueryOptions<T>,
-    config?: Config): Promise<T[]>
+  collection: CollectionName,
+  options: QueryOptions<T>,
+  config?: FetchConfig,
+): Promise<T[]>
 ```
 
-### QueryOptions
+### `QueryOptions`
 
 ```typescript
-type FilterOptions<T> =
-  | { eq: T[] }
-  | { ne: T[] }
-  | { gt: T[] }
-  | { lt: T[] }
-  | { ge: T[] }
-  | { le: T[] };
-  | { substringOf: T[] };
+type FilterCriteria<T> = Partial<Record<keyof T, unknown>>;
+
+type FilterOptions<T> = Partial<{
+  eq: FilterCriteria<T>[];
+  ne: FilterCriteria<T>[];
+  gt: FilterCriteria<T>[];
+  lt: FilterCriteria<T>[];
+  ge: FilterCriteria<T>[];
+  le: FilterCriteria<T>[];
+  substringOf: FilterCriteria<T>[];
+}>;
 
 interface QueryOptions<T extends SwissParlEntity> {
   filter?: FilterOptions<T>;
@@ -124,11 +142,11 @@ interface QueryOptions<T extends SwissParlEntity> {
 }
 ```
 
-### Config
+### `FetchConfig`
 
 ```typescript
-interface Config {
-  deepParse?: boolean; // for expanded objects
+interface FetchConfig {
+  deepParse?: boolean; // flattens expanded collections
   maxResults?: number; // default 1000
 }
 ```
